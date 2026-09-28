@@ -15,11 +15,25 @@ POC serverless-конвейера уведомлений: консолидаци
 
 - Terraform IaC: SQS + Lambda (Python) + SES + IAM + CloudWatch
 - Режимы `legacy` / `optimized` через Terraform-переменную `MODE`
-- ...
+- Поток: `SQS -> Lambda (Python 3.13) -> SES`
+- Terraform-модуль `sqs_lambda`, переиспользуемый через `for_each` (стек legacy/optimized)
+- A/B-демонстрация: 3 письма vs 1 письмо на одно событие
+- CloudWatch-логи, SES-верификация, счётчик отправленных
 
 ## ✅ Validation
 
-<!-- скриншоты terraform apply, CloudWatch, письма -->
+Демо-прогон: в каждую очередь отправлено одно событие `statement_request`.
+
+| Режим | Писем на событие | Скриншот |
+|---|---|---|
+| `legacy` (как ВТБ) | **3** — «принята» + «исполнено» + «выписка» | ![legacy](images/legacy-3-emails.png) |
+| `optimized` (предложение) | **1** — только обязательная выписка | ![optimized](images/optimized-1-email.png) |
+
+## 💡 Key Observations
+
+- Письма SES без своего домена/DKIM попадают в **Spam** (Gmail) — а это критично для доставляемости обязательных уведомлений брокера.
+- Production-путь: SES domain identity + DKIM/SPF/DMARC + custom MAIL FROM.
+- Обязательность письма-выписки — Положение ЦБ РФ № 503-П (гл. 12), см. `docs/compliance.md`.
 
 ## 🔒 Security & Observability
 
