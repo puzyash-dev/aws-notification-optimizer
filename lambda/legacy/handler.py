@@ -1,4 +1,4 @@
-"""Legacy notification flow (VTB today): 3 emails per single action."""
+"""Legacy notification flow (as-is): 3 emails per single action."""
 
 import os
 import json
