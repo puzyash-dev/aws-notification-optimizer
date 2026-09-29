@@ -1,0 +1,15 @@
+timestamp,message
+1790580441814,"INIT_START Runtime Version: python:3.13.mainlinev2.v43	Runtime Version ARN: arn:aws:lambda:ap-northeast-1::runtime:a0627e8616c4eaf447133f427c7419e5ce3a39ea2bc648ccb6d03d5b7f4d96e7
+"
+1790580442277,"START RequestId: 772cde29-3cf5-541d-835b-bd1d25f27d6e Version: $LATEST
+"
+1790580442640,"sent: Заявка на выписку по счёту депо принята
+"
+1790580442801,"sent: Исполнено поручение на выписку
+"
+1790580442957,"sent: Выписка по счёту депо готова
+"
+1790580442959,"END RequestId: 772cde29-3cf5-541d-835b-bd1d25f27d6e
+"
+1790580442959,"REPORT RequestId: 772cde29-3cf5-541d-835b-bd1d25f27d6e	Duration: 681.02 ms	Billed Duration: 1141 ms	Memory Size: 128 MB	Max Memory Used: 88 MB	Init Duration: 459.42 ms	
+"

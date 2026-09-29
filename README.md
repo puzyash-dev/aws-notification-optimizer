@@ -24,10 +24,10 @@ POC serverless-конвейера уведомлений: консолидаци
 
 Демо-прогон: в каждую очередь отправлено одно событие `statement_request`.
 
-| Режим | Писем на событие | Скриншот |
+| Режим | Писем на событие | Лог |
 |---|---|---|
-| `legacy` (как сейчас) | **3** — «принята» + «исполнено» + «выписка» | ![legacy](images/legacy-3-emails.png) |
-| `optimized` (предложение) | **1** — только обязательная выписка | ![optimized](images/optimized-1-email.png) |
+| `legacy` (как сейчас) | **3** — «принята» + «исполнено» + «выписка» | [logs/legacy.csv](docs/logs/legacy.csv) |
+| `optimized` (предложение) | **1** — только обязательная выписка | [logs/optimized.csv](docs/logs/optimized.csv) |
 
 ## 💡 Key Observations
 
