@@ -11,7 +11,19 @@ Regulation No. 503-P).
 
 ## Architecture
 
-<!-- images/architecture.png -->
+```mermaid
+flowchart LR
+    E["statement_request event"]
+    subgraph L["legacy (as-is)"]
+        QL["SQS queue"] --> FL["Lambda"] -->|"3 emails"| SES
+    end
+    subgraph O["optimized (proposal)"]
+        QO["SQS queue"] --> FO["Lambda"] -->|"1 email"| SES
+    end
+    E --> QL
+    E --> QO
+    SES["Amazon SES"] -->|"email"| C["Client inbox"]
+```
 
 ## Key Technical Features
 
