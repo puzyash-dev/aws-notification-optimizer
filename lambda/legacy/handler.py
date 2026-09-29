@@ -28,11 +28,11 @@ def lambda_handler(event, context):
         msg = json.loads(record["body"])
         request_id = msg["request_id"]
 
-        _send("Заявка на выписку по счёту депо принята",
-              f"Заявка №{request_id} принята к исполнению.")
-        _send("Исполнено поручение на выписку",
-              f"Номер распоряжения: {request_id}.")
-        _send("Выписка по счёту депо готова",
-              f"Выписка по запросу №{request_id} доступна: {msg.get('statement_url')}.")
+        _send("Statement request accepted",
+              f"Request #{request_id} accepted for processing.")
+        _send("Statement order executed",
+              f"Order number: {request_id}.")
+        _send("Broker statement is ready",
+              f"Statement for request #{request_id} is available: {msg.get('statement_url')}.")
 
     return {"statusCode": 200}

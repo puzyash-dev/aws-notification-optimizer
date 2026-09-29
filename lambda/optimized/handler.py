@@ -23,14 +23,14 @@ def lambda_handler(event, context):
             Source=SENDER,
             Destination={"ToAddresses": [RECIPIENT]},
             Message={
-                "Subject": {"Data": "Выписка по счёту депо готова"},
+                "Subject": {"Data": "Broker statement is ready"},
                 "Body": {
                     "Text": {
                         "Data": (
-                            f"Запрос №{request_id} исполнен.\n"
-                            f"Выписка: {msg.get('statement_url')}\n\n"
-                            "Это единственное уведомление — промежуточные "
-                            "«принято / исполнено» отключены."
+                            f"Request #{request_id} has been executed.\n"
+                            f"Statement: {msg.get('statement_url')}\n\n"
+                            "This is the only notification - intermediate "
+                            "'accepted / executed' alerts are disabled."
                         )
                     }
                 },

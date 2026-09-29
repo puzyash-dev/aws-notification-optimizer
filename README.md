@@ -1,52 +1,57 @@
-# ✉️ AWS Notification Optimizer
+# AWS Notification Optimizer
 
-> 📌 **Project Overview**
+> A/B POC of a serverless notification pipeline: consolidating redundant
+> email broadcasts via **SQS + Lambda + SES**.
 
-POC serverless-конвейера уведомлений: консолидация избыточных email-рассылок через **SQS + Lambda + SES**. 
-Сценарий взят из реальной ситуации: брокер шлёт клиенту 3 письма и 2 push-уведомления на одно действие — 
-заказ выписки по счёту депо. Проект показывает, как "как есть" (legacy) превращается в "как надо" (optimized) 
-с сохранением обязательных уведомлений (Положение ЦБ РФ № 503-П).
+The scenario is based on a real broker setup: the broker sends a client **3 emails
+and 2 push notifications** for a single action - requesting a brokerage account
+statement. This project shows how the "as-is" (legacy) flow becomes the "should-be"
+(optimized) flow while keeping the mandatory notifications (Bank of Russia
+Regulation No. 503-P).
 
-## 🏗️ Architecture Diagram
+## Architecture
 
 <!-- images/architecture.png -->
 
-## 🛠️ Key Technical Features
+## Key Technical Features
 
 - Terraform IaC: SQS + Lambda (Python) + SES + IAM + CloudWatch
-- Режимы `legacy` / `optimized` через Terraform-переменную `MODE`
-- Поток: `SQS -> Lambda (Python 3.13) -> SES`
-- Terraform-модуль `sqs_lambda`, переиспользуемый через `for_each` (стек legacy/optimized)
-- A/B-демонстрация: 3 письма vs 1 письмо на одно событие
-- CloudWatch-логи, SES-верификация, счётчик отправленных
+- `legacy` / `optimized` modes via a single Terraform variable
+- Flow: `SQS -> Lambda (Python 3.13) -> SES`
+- Reusable Terraform module `sqs_lambda` via `for_each` (legacy/optimized stacks)
+- A/B validation: **3 emails vs 1 email** per event
+- CloudWatch logs, SES identity verification, sent counter
 
-## ✅ Validation
+## Validation
 
-Демо-прогон: в каждую очередь отправлено одно событие `statement_request`.
+Demo: one `statement_request` event sent to each queue. Raw evidence from
+CloudWatch logs:
 
-| Режим | Писем на событие | Лог |
+| Mode | Emails per event | Log |
 |---|---|---|
-| `legacy` (как сейчас) | **3** — «принята» + «исполнено» + «выписка» | [logs/legacy.csv](docs/logs/legacy.csv) |
-| `optimized` (предложение) | **1** — только обязательная выписка | [logs/optimized.csv](docs/logs/optimized.csv) |
+| `legacy` (as-is) | **3** - accepted + executed + statement | [logs/legacy.csv](docs/logs/legacy.csv) |
+| `optimized` (proposal) | **1** - mandatory statement only | [logs/optimized.csv](docs/logs/optimized.csv) |
 
-## 💡 Key Observations
+## Key Observations
 
-- Письма SES без своего домена/DKIM попадают в **Spam** (Gmail) — а это критично для доставляемости обязательных уведомлений брокера.
-- Production-путь: SES domain identity + DKIM/SPF/DMARC + custom MAIL FROM.
-- Обязательность письма-выписки — Положение ЦБ РФ № 503-П (гл. 12), см. `docs/compliance.md`.
+- SES emails without a verified domain / DKIM land in **Spam** (Gmail) - critical
+  for the deliverability of the broker's mandatory notifications.
+- Production path: SES domain identity + DKIM/SPF/DMARC + custom MAIL FROM.
+- The statement email is mandatory per Bank of Russia Regulation No. 503-P
+  (ch. 12); see `docs/compliance.md`.
 
-## 🔒 Security & Observability
+## Security & Observability
 
-- IAM least privileges, никаких hardcoded-секретов
-- CloudWatch metrics + budgets
+- IAM least privilege, no hardcoded secrets
+- CloudWatch logs + monthly cost budget alert
 
-## 📂 Repository Structure
+## Repository Structure
 
-├── infra/          # Terraform
-├── lambda/         # Python (legacy/optimized/common)
-├── docs/           # compliance.md, letter.md
-└── images/         # схемы и скриншоты
+    infra/   # Terraform IaC
+    lambda/  # Python handlers (legacy / optimized / common)
+    docs/    # compliance.md, deliverability.md, logs/
+    images/  # diagrams and screenshots
 
-## 🛠️ Stack
+## Stack
 
 AWS | Terraform | Python | SES | SQS | Lambda

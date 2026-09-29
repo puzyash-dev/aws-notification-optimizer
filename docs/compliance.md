@@ -1,20 +1,27 @@
-# 📜 Compliance-анализ уведомлений (кейс брокера)
+# Compliance Analysis of Notifications (Broker Case)
 
-## Письма, приходящие на одно действие (заказ выписки по счёту депо)
+## Emails sent per single action (statement request)
 
-| # | Письмо | Обязательно? | Основание |
+| # | Email | Mandatory? | Basis |
 |---|---|---|---|
-| 1 | «Заявка на выписку принята» | ❌ необязательно | продуктовая активность |
-| 2 | «Исполнено поручение на выписку» | ❌ необязательно | продуктовая активность |
-| 3 | Выписка (отчёт + вложение) | ✅ обязательно | Положение ЦБ РФ № 503-П (гл. 12) |
-| push ×2 | уведомления в приложении | ❌ необязательно | продуктовая активность |
+| 1 | "Statement request accepted" | no - product activity |
+| 2 | "Statement order executed" | no - product activity |
+| 3 | Statement (report + attachment) | **yes** | Bank of Russia Regulation No. 503-P (ch. 12) |
+| push x2 | in-app notifications | no - product activity |
 
-## Нормы
+## Regulations
 
-- **Положение ЦБ РФ № 503-П** — «О депозитарной деятельности». Выписка по счёту депо предоставляется по требованию клиента (гл. 12): это и есть письмо №3, его убрать нельзя.
-- **Положение № 606-П** — хранение документов профучастника ≥ 5 лет → письма/выписки должны архивироваться.
-- **Положение № 577-П** — отчётность брокера клиентам (гл. 9) — контекст отправки отчётных документов.
+- **Bank of Russia Regulation No. 503-P** - "On Depository Activity". A statement
+  of the securities account is provided upon client request (ch. 12): this is
+  email #3, and it **cannot be removed**.
+- **Regulation No. 606-P** - a professional participant must store documents for
+  >= 5 years, so emails/statements must be archived.
+- **Regulation No. 577-P** - broker reporting to clients (ch. 9) - the context
+  for sending reporting documents.
 
-## Вывод для оптимизации
+## Conclusion for optimization
 
-Письма 1–2 и push-уведомления не обязательны и дублируют друг друга. Их консолидация в **одно итоговое письмо** (выписка) не нарушает прав клиента и снижает информационный шум: 3 письма + 2 пуша → 1 письмо + запись в ЛК.
+Emails 1-2 and the push notifications are optional and duplicate each other.
+Consolidating them into **one final email** (the statement) does not violate
+client rights and reduces information noise: **3 emails + 2 pushes -> 1 email +
+record in the personal account**.

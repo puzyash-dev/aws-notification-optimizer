@@ -1,24 +1,28 @@
-# 📬 Доставляемость: почему письма ушли в Spam
+# Deliverability: Why Emails Landed in Spam
 
-## Наблюдение в демо
+## Observation in the demo
 
-SES в sandbox, sender = подтверждённый email, без доменного identity. Gmail положил все письма в **Spam**.
+SES in sandbox, sender = verified email address, no domain identity.
+Gmail put all emails into **Spam**.
 
-## Почему
+## Why
 
-| Настройка | Значение в демо | Что нужно в production |
+| Setting | Value in the demo | Required in production |
 |---|---|---|
-| Identity | email (адрес) | **domain identity** (свой домен) |
-| DKIM | ❌ (SigningEnabled=false) | ✅ DKIM-записи в DNS |
-| SPF | нет | SPF + MX |
-| MAIL FROM | дефолтный amazonses.com | **custom MAIL FROM** (свой поддомен) |
+| Identity | email (address) | **domain identity** (custom domain) |
+| DKIM | no (SigningEnabled=false) | **DKIM records** in DNS |
+| SPF | none | SPF + MX |
+| MAIL FROM | default amazonses.com | **custom MAIL FROM** (own subdomain) |
 
-## Вывод
+## Conclusion
 
-Обязательное брокерское письмо (выписка) обязано доходить до ящика. Без аутентификации отправителя даже корректные письма попадают в спам — это аргумент, который стоит нести брокеру: меньше писем + правильная аутентификация = выше доставляемость важного.
+The broker's mandatory email (statement) must reliably reach the inbox. Without
+sender authentication, even correct emails land in spam - a strong argument to
+take to the broker: fewer emails + proper authentication = higher deliverability
+of the important one.
 
-## Как починить (путь для продакшена)
+## How to fix (production path)
 
-1. Взять домен, создать `aws_sesv2_email_identity` для домена.
-2. Добавить DKIM (3 CNAME) и MAIL FROM (MX + SPF) в DNS.
-3. Перевести sandbox → production (заявка в AWS Support).
+1. Get a domain and create an `aws_sesv2_email_identity` for it.
+2. Add DKIM (3 CNAME records) and MAIL FROM (MX + SPF) to DNS.
+3. Move from sandbox to production (AWS Support request).
